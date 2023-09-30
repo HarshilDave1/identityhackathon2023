@@ -22,6 +22,7 @@ def trust_identities(linked_attestations):
     Ti = None  # Placeholder
     return Ti
 
+
 # Example Usage (User will replace with actual implementation)
 # trust_identity_attester = ...  # User will provide the actual value
 # linked_attestations_for_claim = ...  # User will provide the actual list of linked attestations
