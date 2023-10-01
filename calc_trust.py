@@ -1,5 +1,6 @@
 import copy
-from math import log
+from math import log, exp
+import random
 
 
 def initialize_trust_scores(attestations):
@@ -12,20 +13,26 @@ def initialize_trust_scores(attestations):
 
     for attestation in attestations:
         # Initialize trust score for attestation
-        trust_scores["Ta"][attestation.uid] = 0.1  # Example initialization
+        trust_scores["Ta"][attestation.uid] = 0  # Initialization to 0
 
         # Initialize trust score for claim
         # Assuming attestation.data contains the claim information
         for claim in attestation.data.keys():
-            trust_scores["Tc"][claim] = 0.1  # Example initialization
-
-        # Initialize trust score for identity (recipient)
-        recipient = attestation.recipient
-        trust_scores["Ti"][recipient] = 0.1  # Example initialization
+            trust_scores["Tc"][claim] = 0  # Initialization to 0
 
         # Initialize trust score for identity (attester)
         attester = attestation.attester
-        trust_scores["Ti"][attester] = 0.1  # Example initialization
+        # Check if the attester is already in the dictionary
+        if attester not in trust_scores["Ti"]:
+            trust_scores["Ti"][
+                attester
+            ] = {}  # Initialize as an empty dictionary if not present
+
+        # Randomly assign some attesters a value of 0.9
+        for claim in attestation.data.keys():
+            trust_scores["Ti"][attester][claim] = (
+                0.9 if random.choice([True, False]) else 0
+            )
 
     return trust_scores
 
@@ -52,20 +59,29 @@ def check_convergence(previous_trust_scores, trust_scores, convergence_threshold
     # Check if the difference between previous and current trust scores is below the convergence threshold
     for score_type in ["Ta", "Tc", "Ti"]:
         for uid, score in trust_scores[score_type].items():
-            if (
-                abs(score - previous_trust_scores[score_type][uid])
-                >= convergence_threshold
-            ):
-                return False
+            if score_type == "Ti":  # For "Ti", we have nested dictionaries
+                for claim, claim_score in score.items():
+                    if (
+                        abs(claim_score - previous_trust_scores[score_type][uid][claim])
+                        >= convergence_threshold
+                    ):
+                        return False
+            else:  # For "Ta" and "Tc", we have single-level dictionaries
+                if (
+                    abs(score - previous_trust_scores[score_type][uid])
+                    >= convergence_threshold
+                ):
+                    return False
     return True
 
 
-def trust_attestations(trust_identity_attester):
+def trust_attestations(trust_identity_attester, attestation):
     # Inputs: trust_identity of the attester
     # Outputs: Ta - the trust score of the attestation
     d = 0.9  # Coefficient predefined in paper
     confidence = 1  # Confidence factor from attester in attestation
-    Ta = trust_identity_attester * d * confidence
+    claim = list(attestation.data.keys())[0]
+    Ta = trust_identity_attester[claim] * d * confidence
     return Ta
 
 
@@ -78,18 +94,24 @@ def trust_claims(linked_attestations, attestation_trust_scores):
         attestation_trust_scores[attestation.uid] for attestation in linked_attestations
     )
     s = log(0.5) / 20  # Assuming the base of the logarithm is e
-    Tc = s * Ta_sum
+    exponent = s * Ta_sum * len(linked_attestations)
+    Tc = 1 - exp(exponent)
     return Tc
 
 
 def trust_identities(linked_attestations, attestation_claim_scores):
     # Inputs: All of the attestations linked to an identity
-    # Outputs: Ti - the trust of the identity
-    # The actual math will be implemented by the user
-    Tc_sum = sum(
-        attestation_claim_scores[attestation.uid] for attestation in linked_attestations
-    )
-    Ti = Tc_sum  # Placeholder
+    # Outputs: Dictionary with Ti for each claim of the identity
+
+    Ti = {}
+    for attestation in linked_attestations:
+        claim = list(attestation.data.keys())[
+            0
+        ]  # Since each attestation contains only one claim
+        Ti[claim] = attestation_claim_scores[
+            claim
+        ]  # Assign the Tc value of the claim to Ti
+
     return Ti
 
 
@@ -103,16 +125,20 @@ def calculate_trust(attestations, num_rounds=10, convergence_threshold=0.01):
 
         for attestation in attestations:
             # Calculate Ta using trust_identity of the attester
-            Ta = trust_attestations(trust_scores["Ti"][attestation.attester])
+            Ta = trust_attestations(
+                trust_scores["Ti"][attestation.attester], attestation
+            )
             trust_scores["Ta"][attestation.uid] = Ta  # Update Ta in trust_scores
 
             # Find linked attestations for claim and calculate Tc
             linked_attestations_for_claim = find_linked_attestations_for_claim(
                 attestations, attestation.uid
             )
+            claim = list(attestation.data.keys())[
+                0
+            ]  # Since each attestation contains only one claim
             Tc = trust_claims(linked_attestations_for_claim, trust_scores["Ta"])
-            for claim in attestation.data.keys():
-                trust_scores["Tc"][claim] = Tc  # Update Tc in trust_scores
+            trust_scores["Tc"][claim] = Tc  # Update Tc in trust_scores
 
             # Find linked attestations for recipient and calculate Ti
             linked_attestations_for_identity = find_linked_attestations_for_identity(
@@ -121,18 +147,10 @@ def calculate_trust(attestations, num_rounds=10, convergence_threshold=0.01):
             Ti_recipient = trust_identities(
                 linked_attestations_for_identity, trust_scores["Tc"]
             )
-            trust_scores["Ti"][
-                attestation.recipient
-            ] = Ti_recipient  # Update Ti in trust_scores for recipient
 
-            # Find linked attestations for attester and calculate Ti
-            linked_attestations_for_identity = find_linked_attestations_for_identity(
-                attestations, attestation.attester
-            )
-            Ti_attester = trust_identities(linked_attestations_for_identity)
-            trust_scores["Ti"][
-                attestation.attester
-            ] = Ti_attester  # Update Ti in trust_scores for attester
+            # Update Ti in trust_scores for each claim of the recipient
+            for claim, Ti_value in Ti_recipient.items():
+                trust_scores["Ti"][attestation.recipient][claim] = Ti_value
 
         # Check convergence
         if check_convergence(
