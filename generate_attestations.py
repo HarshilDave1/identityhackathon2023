@@ -2,7 +2,6 @@ import random
 import time
 
 
-# Define Schema
 class Attestation:
     def __init__(self, uid, time, recipient, attester, data, isTrue=None):
         self.uid = uid
@@ -13,6 +12,10 @@ class Attestation:
         self.isTrue = (
             isTrue  # This will hold the uid of the attestation being attested to
         )
+        self.Ti_attester = {}  # Initialize as an empty dictionary
+        self.Ta = 0
+        self.Tc = 0
+        self.Ti_recipient = {}
 
 
 # Define Wallet Addresses and their roles
@@ -60,16 +63,18 @@ def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
         data = {claim_type: claim_value}
 
         # If attester is honest, correct the data to be true
-        if wallet_addresses[attester]["role"] == "honest":
-            if claim_type == "creditworthiness":
-                data[claim_type] = wallet_addresses[recipient][claim_type]
-            else:
-                data[claim_type] = wallet_addresses[recipient][claim_type]
+        if wallet_addresses[attester]["role"] == "honest":        
+            data[claim_type] = wallet_addresses[recipient][claim_type]
+     
 
         # If there are previous attestations, randomly decide whether to attest to one
         isTrue = None
         if attestations and random.choice([True, False]):
             isTrue = random.choice(attestations).uid
+            recipient = None # Set recipient to None
+            data = attestations[isTrue].data # Match data in receiving attestation
+            
+            
 
         attestation = Attestation(
             uid, attestation_time, recipient, attester, data, isTrue
