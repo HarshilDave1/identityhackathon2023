@@ -53,34 +53,32 @@ def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
         uid = len(attestations) + 1
         attestation_time = time.time()  # Current time in seconds since the Epoch
 
-        # Select a random claim type
-        claim_type = random.choice(["is_human", "is_bot", "creditworthiness"])
-        if claim_type == "creditworthiness":
-            claim_value = random.randint(0, 100)  # Random creditworthiness score
-        else:
-            claim_value = random.choice([True, False])  # Random boolean value
-
-        data = {claim_type: claim_value}
-
-        # If attester is honest, correct the data to be true
-        if wallet_addresses[attester]["role"] == "honest":        
-            data[claim_type] = wallet_addresses[recipient][claim_type]
-     
-
         # If there are previous attestations, randomly decide whether to attest to one
         isTrue = None
         if attestations and random.choice([True, False]):
             isTrue = random.choice(attestations).uid
-            recipient = None # Set recipient to None
-            data = attestations[isTrue].data # Match data in receiving attestation
-            
-            
+            recipient = None  # Set recipient to None
+            data = {str(isTrue): attestations[isTrue - 1].data}  # Match data in receiving attestation
+        else:
+            # Select a random claim type
+            claim_type = random.choice(["is_human", "is_bot", "creditworthiness"])
+            if claim_type == "creditworthiness":
+                claim_value = random.randint(0, 100)  # Random creditworthiness score
+            else:
+                claim_value = random.choice([True, False])  # Random boolean value
+
+            data = {claim_type: claim_value}
+
+            # If attester is honest, correct the data to be true
+            if wallet_addresses[attester]["role"] == "honest" and recipient is not None:
+                data[claim_type] = wallet_addresses[recipient][claim_type]
 
         attestation = Attestation(
             uid, attestation_time, recipient, attester, data, isTrue
         )
         attestations.append(attestation)
     return attestations
+
 
 
 # Main Function

@@ -3,7 +3,7 @@ from math import log, exp
 import random
 
 
-def initialize_trust_scores(attestations):
+def initialize_trust_scores(attestations, wallet_addresses):
     for attestation in attestations:
         # Initialize trust score for attestation
         attestation.Ta = 0  # Initialization to 0
@@ -13,7 +13,12 @@ def initialize_trust_scores(attestations):
         attestation.Tc = {claim: 0}  # Initialization to 0
 
         # Initialize trust score for identity (attester)
-        attestation.Ti_attester[claim] = 0.9 if random.choice([True, False]) else 0
+        # Check if the attester is honest
+        is_honest = wallet_addresses[attestation.attester]['role'] == 'honest'
+        if is_honest:
+            attestation.Ti_attester = {claim: 0.9 if random.choice([True, False]) else 0}
+        else:
+            attestation.Ti_attester = {claim: 0}
 
 
 def find_linked_attestations_for_claim(attestations, target_attestation_uid):
@@ -26,12 +31,15 @@ def find_linked_attestations_for_claim(attestations, target_attestation_uid):
     return linked_attestations
 
 
-def find_linked_attestations_for_identity(attestations, identity):
-    # Find all attestations linked to the given identity
+def find_linked_attestations_for_identity(input_attestation, attestations):
+    # Find all attestations linked to the given identity and claim
     linked_attestations = [
-        attestation for attestation in attestations if attestation.recipient == identity
+        attestation for attestation in attestations 
+        if attestation.recipient == input_attestation.recipient 
+        and attestation.data == input_attestation.data
     ]
     return linked_attestations
+
 
 
 def check_convergence(previous_attestations, current_attestations, convergence_threshold):
@@ -103,18 +111,18 @@ def trust_identities(input_attestation,linked_attestations):
     
     # Use math below to calculate Ti
     Ti = {}
-    for claim, Ui_value in Ui_sum.items():
-        k = -0.001
-        f = 500
-        Ti[claim] = (1-exp(k*(Ui_value-f)))/(1+exp(k*(Ui_value-f)))*0.5+0.5
     
+    k = -0.001
+    f = 500
+    Ti[claim] = (1-exp(k*(Ui_sum[claim]-f)))/(1+exp(k*(Ui_sum[claim]-f)))*0.5+0.5
+
     return Ti
 
 
 
 
-def calculate_trust(attestations, num_rounds=10, convergence_threshold=0.01):
-    initialize_trust_scores(attestations)
+def calculate_trust(attestations, wallet_addresses, num_rounds=10, convergence_threshold=0.01):
+    initialize_trust_scores(attestations, wallet_addresses)
     previous_attestations = copy.deepcopy(attestations)  # Deep copy to avoid reference issues
     
     for round in range(num_rounds):
@@ -129,7 +137,7 @@ def calculate_trust(attestations, num_rounds=10, convergence_threshold=0.01):
 
             
             # Find linked attestations for recipient and calculate Ti
-            linked_attestations_for_identity = find_linked_attestations_for_identity(attestations, attestation.recipient)
+            linked_attestations_for_identity = find_linked_attestations_for_identity(attestation,attestations)
             attestation.Ti_recipient = trust_identities(attestation,linked_attestations_for_identity)
         
         # Check convergence
