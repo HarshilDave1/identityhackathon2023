@@ -25,15 +25,22 @@ def generate_wallet_addresses(num_wallets, dishonest_ratio=0.2):
 
     for i in range(1, num_wallets + 1):
         role = "dishonest" if i <= num_dishonest else "honest"
-        wallet_addresses[f"address{i}"] = role
+        is_human = random.choice([True, False])
+        is_bot = not is_human
+        creditworthiness = random.randint(0, 100)
+
+        wallet_addresses[f"address{i}"] = {
+            "role": role,
+            "is_human": is_human,
+            "is_bot": is_bot,
+            "creditworthiness": creditworthiness,
+        }
 
     return wallet_addresses
 
 
 # Generate Attestations
 def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
-    # Define possible claims
-    claims = ["isHuman", "isBot", "creditworthinessScore"]
     for _ in range(num_attestations):
         attester = random.choice(list(wallet_addresses.keys()))
         recipient = random.choice(list(wallet_addresses.keys()))
@@ -42,11 +49,22 @@ def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
 
         uid = len(attestations) + 1
         attestation_time = time.time()  # Current time in seconds since the Epoch
-        data = {claim: random.choice([True, False]) for claim in claims}
+
+        # Select a random claim type
+        claim_type = random.choice(["is_human", "is_bot", "creditworthiness"])
+        if claim_type == "creditworthiness":
+            claim_value = random.randint(0, 100)  # Random creditworthiness score
+        else:
+            claim_value = random.choice([True, False])  # Random boolean value
+
+        data = {claim_type: claim_value}
 
         # If attester is honest, correct the data to be true
-        if wallet_addresses[attester] == "honest":
-            data = {claim: True for claim in claims}
+        if wallet_addresses[attester]["role"] == "honest":
+            if claim_type == "creditworthiness":
+                data[claim_type] = wallet_addresses[recipient][claim_type]
+            else:
+                data[claim_type] = wallet_addresses[recipient][claim_type]
 
         # If there are previous attestations, randomly decide whether to attest to one
         isTrue = None
