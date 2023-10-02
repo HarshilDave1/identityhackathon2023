@@ -30,13 +30,19 @@ def generate_wallet_addresses(num_wallets, dishonest_ratio=0.2):
         role = "dishonest" if i <= num_dishonest else "honest"
         is_human = random.choice([True, False])
         is_bot = not is_human
-        creditworthiness = random.randint(0, 100)
+        creditworthiness = random.random()
 
         wallet_addresses[f"address{i}"] = {
             "role": role,
             "is_human": is_human,
             "is_bot": is_bot,
             "creditworthiness": creditworthiness,
+            "calculated_trust": {
+                "is_human": 0,
+                "is_bot": 0,
+                "creditworthiness": 0,
+            },  
+
         }
 
     return wallet_addresses
