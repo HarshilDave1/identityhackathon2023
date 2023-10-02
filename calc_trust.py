@@ -7,7 +7,7 @@ def initialize_trust_scores(attestations, wallet_addresses):
     for attestation in attestations:
         # Initialize trust score for attestation
         attestation.Ta = 0  # Initialization to 0
-
+        predefined_claims = ["is_human", "is_bot", "creditworthiness"]
         # Initialize trust score for claim
         claim = list(attestation.data.keys())[0]
         attestation.Tc = {claim: 0}  # Initialization to 0
@@ -16,14 +16,18 @@ def initialize_trust_scores(attestations, wallet_addresses):
         # Check if the attester is honest
         is_honest = wallet_addresses[attestation.attester]['role'] == 'honest'
         if is_honest:
-            attestation.Ti_attester = {claim: 0.9 if random.choice([True, False]) else 0}
+            if claim in predefined_claims:
+                attestation.Ti_attester = {claim: 0.9 if random.choice([True, False, False, False]) else 0}
+                wallet_addresses[attestation.attester]["calculated_trust"][claim] = attestation.Ti_attester[claim]
+                if attestation.Ti_attester[claim] == 0.9:
+                    print(f'Trusted attester: {attestation.attester}') 
+            else:
+                attestation.Ti_attester = {claim: 0}
         else:
             attestation.Ti_attester = {claim: 0}
             
-        predefined_claims = ["is_human", "is_bot", "creditworthiness"]
-        if claim in predefined_claims:
-            wallet_addresses[attestation.recipient]["calculated_trust"][claim] = attestation.Ti_attester[claim]
-
+        
+      
 def find_linked_attestations_for_claim(attestations, target_attestation_uid):
     # Find all attestations that have said isTrue about the given attestation
     linked_attestations = [
@@ -82,7 +86,7 @@ def trust_claims(input_attestation,linked_attestations):
     # The function must find all of the isTrue attestations linked to the previous attestation
     s = log(0.5) / 20  # Assuming the base of the logarithm is e
     Ta_sum = sum(attestation.Ta for attestation in linked_attestations) + input_attestation.Ta
-    exponent = s * Ta_sum * len(linked_attestations)
+    exponent = s * Ta_sum * (len(linked_attestations)+1)
     Tc = round(1 - exp(exponent), ndigits=2)
     return Tc
 
