@@ -111,7 +111,8 @@ def trust_identities(input_attestation,linked_attestations):
     k = -0.001
     f = 500
     Ti[claim] = round((1-exp(k*(Ui_sum[claim]-f)))/(1+exp(k*(Ui_sum[claim]-f)))*0.5+0.5 , ndigits=2)
-
+    print(f'input trust {input_attestation.Tc[claim]}')
+    print(f'output calc trust {Ti[claim]}')
     return Ti
 
 def calculate_trust(attestations, wallet_addresses, num_rounds=2, convergence_threshold=0.01):
