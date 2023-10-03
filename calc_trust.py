@@ -24,9 +24,7 @@ def initialize_trust_scores(attestations, wallet_addresses):
             else:
                 attestation.Ti_attester[claim]  = 0
         else:
-            attestation.Ti_attester[claim]  = 0
-            
-        
+            attestation.Ti_attester[claim]  = 0  
       
 def find_linked_attestations_for_claim(attestations, target_attestation_uid):
     # Find all attestations that have said isTrue about the given attestation
