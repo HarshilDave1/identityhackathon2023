@@ -16,15 +16,15 @@ def initialize_trust_scores(attestations, wallet_addresses):
         # Check if the attester is honest
         is_honest = wallet_addresses[attestation.attester]['role'] == 'honest'
         if is_honest:
-            if claim in predefined_claims:
-                attestation.Ti_attester = {claim: 0.9 if random.choice([True, False, False, False]) else 0}
-                wallet_addresses[attestation.attester]["calculated_trust"][claim] = attestation.Ti_attester[claim]
-                if attestation.Ti_attester[claim] == 0.9:
-                    print(f'Trusted attester: {attestation.attester}') 
+            if random.choice([True, False, False, False, False, False, False, False, False, False, False, False]):
+                for claim in predefined_claims:
+                    attestation.Ti_attester[claim] =  1
+                    wallet_addresses[attestation.attester]["calculated_trust"][claim] = attestation.Ti_attester[claim]
+                print(f'Trusted attester: {attestation.attester}') 
             else:
-                attestation.Ti_attester = {claim: 0}
+                attestation.Ti_attester[claim]  = 0
         else:
-            attestation.Ti_attester = {claim: 0}
+            attestation.Ti_attester[claim]  = 0
             
         
       
@@ -70,13 +70,17 @@ def check_convergence(previous_attestations, current_attestations, convergence_t
     return True
 
 
-def trust_attestations(trust_identity_attester, attestation):
+def trust_attestations(trust_identity_attester, claim):
     # Inputs: trust_identity of the attester
     # Outputs: Ta - the trust score of the attestation
     d = 0.9  # Coefficient predefined in paper
     confidence = 1  # Confidence factor from attester in attestation
-    claim = list(attestation.data.keys())[0]
-    Ta = trust_identity_attester[claim] * d * confidence
+    
+    threshold = 0.01
+    if trust_identity_attester[claim] > threshold:
+        Ta = trust_identity_attester[claim] * d * confidence
+    else:
+        Ta = 0 
     return Ta
 
 
@@ -107,12 +111,12 @@ def trust_identities(input_attestation,linked_attestations):
     # Calculate Ti for each claim
     Ui_sum = {claim: Ui_value * n * l for claim, Ui_value in Ui.items()}
     # Use math below to calculate Ti
-    Ti = {}
-    k = -0.001
+    #Ti = {}
+    k = -0.01
     f = 500
-    Ti[claim] = round((1-exp(k*(Ui_sum[claim]-f)))/(1+exp(k*(Ui_sum[claim]-f)))*0.5+0.5 , ndigits=2)
-    print(f'input trust {input_attestation.Tc[claim]}')
-    print(f'output calc trust {Ti[claim]}')
+    Ti = round((1-exp(k*(Ui_sum[claim]-f)))/(1+exp(k*(Ui_sum[claim]-f)))*0.5+0.5 , ndigits=2)
+    #print(f'input trust {input_attestation.Tc[claim]}')
+    #print(f'output calc trust {Ti}')
     return Ti
 
 def calculate_trust(attestations, wallet_addresses, num_rounds=2, convergence_threshold=0.01):
@@ -127,19 +131,23 @@ def calculate_trust(attestations, wallet_addresses, num_rounds=2, convergence_th
             attester_address = attestation.attester
             if claim in predefined_claims:
                 attestation.Ti_attester[claim] = wallet_addresses[attester_address]["calculated_trust"][claim]
+            else:
+                claim = list(attestation.data[claim].keys())[0]
+                attestation.Ti_attester[claim] = wallet_addresses[attester_address]["calculated_trust"][claim]
             
-            attestation.Ta = trust_attestations(attestation.Ti_attester, attestation)
+            attestation.Ta = trust_attestations(attestation.Ti_attester, claim)
             
             # Find linked attestations for claim and calculate Tc
             linked_attestations_for_claim = find_linked_attestations_for_claim(attestations, attestation.uid)
             attestation.Tc[claim] = trust_claims(attestation,linked_attestations_for_claim)
             # Find linked attestations for recipient and calculate Ti
             linked_attestations_for_identity = find_linked_attestations_for_identity(attestation,attestations)
-            attestation.Ti_recipient = trust_identities(attestation,linked_attestations_for_identity)
+            attestation.Ti_recipient[claim] = trust_identities(attestation,linked_attestations_for_identity)
             # Update wallet address trust metrics
             recipient_address = attestation.recipient
-            if claim in predefined_claims:
-                wallet_addresses[recipient_address]["calculated_trust"][claim] = attestation.Ti_recipient[claim]
+            if recipient_address: # address is None if attestation is made to another attestation
+                if wallet_addresses[recipient_address]["calculated_trust"][claim] != 1:
+                    wallet_addresses[recipient_address]["calculated_trust"][claim] = attestation.Ti_recipient[claim]
         #Check convergence
         if check_convergence(previous_attestations, attestations, convergence_threshold):
            break

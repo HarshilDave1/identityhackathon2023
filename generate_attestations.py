@@ -62,7 +62,12 @@ def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
         # If there are previous attestations, randomly decide whether to attest to one
         isTrue = None
         if attestations and random.choice([True, False]):
-            isTrue = random.choice(attestations).uid
+            pick = random.choice(attestations)
+            isTrue = pick.uid
+            while pick.isTrue: #Attestations cannot be nested. (attestations of attestations of attestations)
+                pick = random.choice(attestations)
+                isTrue = pick.uid
+                
             recipient = None  # Set recipient to None
             data = {str(isTrue): attestations[isTrue - 1].data}  # Match data in receiving attestation
         else:
