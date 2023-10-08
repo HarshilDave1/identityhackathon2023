@@ -42,32 +42,32 @@ def generate_wallet_addresses(num_wallets, dishonest_ratio=0.2, trusted_ratio=0.
         else:
             role = "honest"
         
-        is_human = random.choice([True, False])
+        is_safe = random.choice([True, False])
         if role == "dishonest": 
-            is_human = False
-        is_bot = not is_human
+            is_safe = False
+        is_unsafe = not is_safe
         creditworthiness = random.random()
         if role == 'trusted':
             wallet_addresses[f"address{i}"] = {
                 "role": role,
-                "is_human": is_human,
-                "is_bot": is_bot,
+                "is_safe": is_safe,
+                "is_unsafe": is_unsafe,
                 "creditworthiness": creditworthiness,
                 "calculated_trust": {
-                    "is_human": 1,
-                    "is_bot": 1,
+                    "is_safe": 1,
+                    "is_unsafe": 1,
                     "creditworthiness": 1,
                 },  
             }
         else:
             wallet_addresses[f"address{i}"] = {
                 "role": role,
-                "is_human": is_human,
-                "is_bot": is_bot,
+                "is_safe": is_safe,
+                "is_unsafe": is_unsafe,
                 "creditworthiness": creditworthiness,
                 "calculated_trust": {
-                    "is_human": 0,
-                    "is_bot": 0,
+                    "is_safe": 0,
+                    "is_unsafe": 0,
                     "creditworthiness": 0,
                 },  
             }
@@ -104,7 +104,7 @@ def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
             attestations.append(attestation)
         else:
             # Select a random claim type
-            claim_type = random.choice(["is_human"])
+            claim_type = random.choice(["is_safe"])
             if claim_type == "creditworthiness":
                 claim_value = random.randint(0, 100)  # Random creditworthiness score
             else:

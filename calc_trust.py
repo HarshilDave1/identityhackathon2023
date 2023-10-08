@@ -115,7 +115,7 @@ def trust_identities(input_attestation,linked_attestations):
     # print(f'output Ti {Ti} with {len(linked_attestations)} linked claims')
     return Ti
 
-def calculate_trust(attestations, wallet_addresses,predefined_claims = ["is_human", "is_bot", "creditworthiness"], num_rounds=100, convergence_threshold=0.01):
+def calculate_trust(attestations, wallet_addresses,predefined_claims = ["is_safe", "is_unsafe", "creditworthiness"], num_rounds=100, convergence_threshold=0.01):
     initialize_trust_scores(attestations, wallet_addresses,predefined_claims)
     previous_attestations = copy.deepcopy(attestations)  # Deep copy to avoid reference issues
     
