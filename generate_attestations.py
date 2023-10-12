@@ -24,7 +24,7 @@ def print_trusted_wallet_addresses(wallet_addresses):
             print(address)
 
 # Define Wallet Addresses and their roles
-def generate_wallet_addresses(num_wallets, dishonest_ratio=0.2, trusted_ratio=0.1):
+def generate_wallet_addresses(num_wallets, dishonest_ratio=0.1, trusted_ratio=0.2):
     # num_wallets: Total number of wallet addresses to generate
     # dishonest_ratio: The ratio of dishonest addresses to generate
     # trusted_ratio: The ratio of trusted addresses to generate
@@ -50,8 +50,8 @@ def generate_wallet_addresses(num_wallets, dishonest_ratio=0.2, trusted_ratio=0.
         if role == 'trusted':
             wallet_addresses[f"address{i}"] = {
                 "role": role,
-                "is_safe": is_safe,
-                "is_unsafe": is_unsafe,
+                "is_safe": True,
+                "is_unsafe": False,
                 "creditworthiness": creditworthiness,
                 "calculated_trust": {
                     "is_safe": 1,
@@ -89,7 +89,7 @@ def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
 
         # If there are previous attestations, randomly decide whether to attest to one
         isTrue = None
-        if attestations and random.choice([ False]):
+        if attestations and random.choice([ True, False]):
             pick = random.choice(attestations)
             isTrue = pick.uid
             while pick.isTrue: #Attestations cannot be nested. (attestations of attestations of attestations)
@@ -97,7 +97,7 @@ def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
                 isTrue = pick.uid
                 
             recipient = None  # Set recipient to None
-            data = {str(isTrue): attestations[isTrue - 1].data}  # Match data in receiving attestation
+            data = {str(isTrue): attestations[isTrue - 1].data}  # Match data in receiving attestation. -1 for python index
             attestation = Attestation(
                             uid, attestation_time, recipient, attester, data, isTrue
                         )
