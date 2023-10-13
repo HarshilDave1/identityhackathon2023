@@ -41,75 +41,6 @@
              }
 
              
-             #loadingBar {
-                 position:absolute;
-                 top:0px;
-                 left:0px;
-                 width: 100%;
-                 height: 600px;
-                 background-color:rgba(200,200,200,0.8);
-                 -webkit-transition: all 0.5s ease;
-                 -moz-transition: all 0.5s ease;
-                 -ms-transition: all 0.5s ease;
-                 -o-transition: all 0.5s ease;
-                 transition: all 0.5s ease;
-                 opacity:1;
-             }
-
-             #bar {
-                 position:absolute;
-                 top:0px;
-                 left:0px;
-                 width:20px;
-                 height:20px;
-                 margin:auto auto auto auto;
-                 border-radius:11px;
-                 border:2px solid rgba(30,30,30,0.05);
-                 background: rgb(0, 173, 246); /* Old browsers */
-                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
-             }
-
-             #border {
-                 position:absolute;
-                 top:10px;
-                 left:10px;
-                 width:500px;
-                 height:23px;
-                 margin:auto auto auto auto;
-                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
-                 border-radius:10px;
-             }
-
-             #text {
-                 position:absolute;
-                 top:8px;
-                 left:530px;
-                 width:30px;
-                 height:50px;
-                 margin:auto auto auto auto;
-                 font-size:22px;
-                 color: #000000;
-             }
-
-             div.outerBorder {
-                 position:relative;
-                 top:400px;
-                 width:600px;
-                 height:44px;
-                 margin:auto auto auto auto;
-                 border:8px solid rgba(0,0,0,0.1);
-                 background: rgb(252,252,252); /* Old browsers */
-                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
-                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
-                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
-                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
-                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
-                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
-                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
-                 border-radius:72px;
-                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-             }
-             
 
              
 
@@ -125,15 +56,6 @@
             <div id="mynetwork" class="card-body"></div>
         </div>
 
-        
-            <div id="loadingBar">
-              <div class="outerBorder">
-                <div id="text">0%</div>
-                <div id="border">
-                  <div id="bar"></div>
-                </div>
-              </div>
-            </div>
         
         
 
@@ -166,8 +88,8 @@
                   
 
                   // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "purple", "id": "address1", "label": "address1", "shape": "dot", "title": "address1\n Calculated trust: 1\n Actually safe: True"}, {"color": "blue", "id": "address2", "label": "address2", "shape": "dot", "title": "address2\n Calculated trust: 1.0\n Actually safe: True"}, {"color": "blue", "id": "address3", "label": "address3", "shape": "dot", "title": "address3\n Calculated trust: 0\n Actually safe: False"}, {"color": "blue", "id": "address4", "label": "address4", "shape": "dot", "title": "address4\n Calculated trust: 0\n Actually safe: False"}, {"color": "blue", "id": "address5", "label": "address5", "shape": "dot", "title": "address5\n Calculated trust: 1.0\n Actually safe: True"}, {"color": "blue", "id": "address6", "label": "address6", "shape": "dot", "title": "address6\n Calculated trust: 0\n Actually safe: False"}, {"color": "blue", "id": "address7", "label": "address7", "shape": "dot", "title": "address7\n Calculated trust: 1.0\n Actually safe: True"}, {"color": "blue", "id": "address8", "label": "address8", "shape": "dot", "title": "address8\n Calculated trust: 1.0\n Actually safe: True"}, {"color": "blue", "id": "address9", "label": "address9", "shape": "dot", "title": "address9\n Calculated trust: 0\n Actually safe: False"}, {"color": "blue", "id": "address10", "label": "address10", "shape": "dot", "title": "address10\n Calculated trust: 0\n Actually safe: False"}, {"color": "green", "id": 1, "label": 1, "shape": "dot", "title": "1\n{\u0027is_safe\u0027: 0.78}"}, {"color": "green", "id": 5, "label": 5, "shape": "dot", "title": "5\n{\u0027is_safe\u0027: 0.82}"}, {"color": "green", "id": 6, "label": 6, "shape": "dot", "title": "6\n{\u0027is_safe\u0027: 0.0}"}, {"color": "green", "id": 8, "label": 8, "shape": "dot", "title": "8\n{\u0027is_safe\u0027: 0.67}"}, {"color": "green", "id": 9, "label": 9, "shape": "dot", "title": "9\n{\u0027is_safe\u0027: 0.39}"}, {"color": "green", "id": 14, "label": 14, "shape": "dot", "title": "14\n{\u0027is_safe\u0027: 0.14}"}, {"color": "green", "id": 16, "label": 16, "shape": "dot", "title": "16\n{\u0027is_safe\u0027: 0.56}"}, {"color": "green", "id": 18, "label": 18, "shape": "dot", "title": "18\n{\u0027is_safe\u0027: 0.89}"}, {"color": "green", "id": 21, "label": 21, "shape": "dot", "title": "21\n{\u0027is_safe\u0027: 0.79}"}, {"color": "green", "id": 23, "label": 23, "shape": "dot", "title": "23\n{\u0027is_safe\u0027: 0.46}"}, {"color": "green", "id": 24, "label": 24, "shape": "dot", "title": "24\n{\u0027is_safe\u0027: 0.78}"}, {"color": "green", "id": 30, "label": 30, "shape": "dot", "title": "30\n{\u0027is_safe\u0027: 0.79}"}, {"color": "green", "id": 33, "label": 33, "shape": "dot", "title": "33\n{\u0027is_safe\u0027: 0.17}"}, {"color": "green", "id": 35, "label": 35, "shape": "dot", "title": "35\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 40, "label": 40, "shape": "dot", "title": "40\n{\u0027is_safe\u0027: 0.66}"}, {"color": "green", "id": 44, "label": 44, "shape": "dot", "title": "44\n{\u0027is_safe\u0027: 0.86}"}, {"color": "green", "id": 49, "label": 49, "shape": "dot", "title": "49\n{\u0027is_safe\u0027: 0.89}"}, {"color": "green", "id": 52, "label": 52, "shape": "dot", "title": "52\n{\u0027is_safe\u0027: 0.87}"}, {"color": "green", "id": 61, "label": 61, "shape": "dot", "title": "61\n{\u0027is_safe\u0027: 0.37}"}, {"color": "green", "id": 66, "label": 66, "shape": "dot", "title": "66\n{\u0027is_safe\u0027: 0.58}"}, {"color": "green", "id": 67, "label": 67, "shape": "dot", "title": "67\n{\u0027is_safe\u0027: 0.22}"}, {"color": "green", "id": 68, "label": 68, "shape": "dot", "title": "68\n{\u0027is_safe\u0027: 0.53}"}, {"color": "green", "id": 69, "label": 69, "shape": "dot", "title": "69\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 74, "label": 74, "shape": "dot", "title": "74\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 77, "label": 77, "shape": "dot", "title": "77\n{\u0027is_safe\u0027: 0.0}"}, {"color": "green", "id": 79, "label": 79, "shape": "dot", "title": "79\n{\u0027is_safe\u0027: 0.67}"}, {"color": "green", "id": 81, "label": 81, "shape": "dot", "title": "81\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 83, "label": 83, "shape": "dot", "title": "83\n{\u0027is_safe\u0027: 0.06}"}, {"color": "green", "id": 88, "label": 88, "shape": "dot", "title": "88\n{\u0027is_safe\u0027: 0.39}"}, {"color": "green", "id": 90, "label": 90, "shape": "dot", "title": "90\n{\u0027is_safe\u0027: 0.14}"}, {"color": "green", "id": 93, "label": 93, "shape": "dot", "title": "93\n{\u0027is_safe\u0027: 0.53}"}, {"color": "green", "id": 97, "label": 97, "shape": "dot", "title": "97\n{\u0027is_safe\u0027: 0.31}"}, {"color": "green", "id": 98, "label": 98, "shape": "dot", "title": "98\n{\u0027is_safe\u0027: 0.53}"}, {"color": "green", "id": 101, "label": 101, "shape": "dot", "title": "101\n{\u0027is_safe\u0027: 0.53}"}, {"color": "green", "id": 112, "label": 112, "shape": "dot", "title": "112\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 114, "label": 114, "shape": "dot", "title": "114\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 115, "label": 115, "shape": "dot", "title": "115\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 116, "label": 116, "shape": "dot", "title": "116\n{\u0027is_safe\u0027: 0.35}"}, {"color": "green", "id": 123, "label": 123, "shape": "dot", "title": "123\n{\u0027is_safe\u0027: 0.14}"}, {"color": "green", "id": 127, "label": 127, "shape": "dot", "title": "127\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 128, "label": 128, "shape": "dot", "title": "128\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 130, "label": 130, "shape": "dot", "title": "130\n{\u0027is_safe\u0027: 0.17}"}, {"color": "green", "id": 133, "label": 133, "shape": "dot", "title": "133\n{\u0027is_safe\u0027: 0.22}"}, {"color": "green", "id": 136, "label": 136, "shape": "dot", "title": "136\n{\u0027is_safe\u0027: 0.67}"}, {"color": "green", "id": 138, "label": 138, "shape": "dot", "title": "138\n{\u0027is_safe\u0027: 0.09}"}, {"color": "green", "id": 142, "label": 142, "shape": "dot", "title": "142\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 143, "label": 143, "shape": "dot", "title": "143\n{\u0027is_safe\u0027: 0.57}"}, {"color": "green", "id": 144, "label": 144, "shape": "dot", "title": "144\n{\u0027is_safe\u0027: 0.0}"}, {"color": "green", "id": 145, "label": 145, "shape": "dot", "title": "145\n{\u0027is_safe\u0027: 0.63}"}, {"color": "green", "id": 149, "label": 149, "shape": "dot", "title": "149\n{\u0027is_safe\u0027: 0.22}"}, {"color": "green", "id": 151, "label": 151, "shape": "dot", "title": "151\n{\u0027is_safe\u0027: 0.14}"}, {"color": "green", "id": 153, "label": 153, "shape": "dot", "title": "153\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 154, "label": 154, "shape": "dot", "title": "154\n{\u0027is_safe\u0027: 0.14}"}, {"color": "green", "id": 157, "label": 157, "shape": "dot", "title": "157\n{\u0027is_safe\u0027: 0.75}"}, {"color": "green", "id": 164, "label": 164, "shape": "dot", "title": "164\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 166, "label": 166, "shape": "dot", "title": "166\n{\u0027is_safe\u0027: 0.35}"}, {"color": "green", "id": 168, "label": 168, "shape": "dot", "title": "168\n{\u0027is_safe\u0027: 0.37}"}, {"color": "green", "id": 169, "label": 169, "shape": "dot", "title": "169\n{\u0027is_safe\u0027: 0.37}"}, {"color": "green", "id": 171, "label": 171, "shape": "dot", "title": "171\n{\u0027is_safe\u0027: 0.06}"}, {"color": "green", "id": 172, "label": 172, "shape": "dot", "title": "172\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 173, "label": 173, "shape": "dot", "title": "173\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 174, "label": 174, "shape": "dot", "title": "174\n{\u0027is_safe\u0027: 0.06}"}, {"color": "green", "id": 178, "label": 178, "shape": "dot", "title": "178\n{\u0027is_safe\u0027: 0.37}"}, {"color": "green", "id": 181, "label": 181, "shape": "dot", "title": "181\n{\u0027is_safe\u0027: 0.66}"}, {"color": "green", "id": 182, "label": 182, "shape": "dot", "title": "182\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 185, "label": 185, "shape": "dot", "title": "185\n{\u0027is_safe\u0027: 0.31}"}, {"color": "green", "id": 187, "label": 187, "shape": "dot", "title": "187\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 188, "label": 188, "shape": "dot", "title": "188\n{\u0027is_safe\u0027: 0.79}"}, {"color": "green", "id": 189, "label": 189, "shape": "dot", "title": "189\n{\u0027is_safe\u0027: 0.06}"}, {"color": "green", "id": 190, "label": 190, "shape": "dot", "title": "190\n{\u0027is_safe\u0027: 0.0}"}, {"color": "green", "id": 191, "label": 191, "shape": "dot", "title": "191\n{\u0027is_safe\u0027: 0.22}"}, {"color": "green", "id": 192, "label": 192, "shape": "dot", "title": "192\n{\u0027is_safe\u0027: 0.0}"}, {"color": "green", "id": 197, "label": 197, "shape": "dot", "title": "197\n{\u0027is_safe\u0027: 0.06}"}, {"color": "green", "id": 199, "label": 199, "shape": "dot", "title": "199\n{\u0027is_safe\u0027: 0.27}"}, {"color": "green", "id": 208, "label": 208, "shape": "dot", "title": "208\n{\u0027is_safe\u0027: 0.24}"}, {"color": "green", "id": 211, "label": 211, "shape": "dot", "title": "211\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 214, "label": 214, "shape": "dot", "title": "214\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 215, "label": 215, "shape": "dot", "title": "215\n{\u0027is_safe\u0027: 0.37}"}, {"color": "green", "id": 218, "label": 218, "shape": "dot", "title": "218\n{\u0027is_safe\u0027: 0.09}"}, {"color": "green", "id": 219, "label": 219, "shape": "dot", "title": "219\n{\u0027is_safe\u0027: 0.24}"}, {"color": "green", "id": 220, "label": 220, "shape": "dot", "title": "220\n{\u0027is_safe\u0027: 0.12}"}, {"color": "green", "id": 222, "label": 222, "shape": "dot", "title": "222\n{\u0027is_safe\u0027: 0.37}"}, {"color": "green", "id": 225, "label": 225, "shape": "dot", "title": "225\n{\u0027is_safe\u0027: 0.31}"}, {"color": "green", "id": 227, "label": 227, "shape": "dot", "title": "227\n{\u0027is_safe\u0027: 0.09}"}, {"color": "green", "id": 228, "label": 228, "shape": "dot", "title": "228\n{\u0027is_safe\u0027: 0.17}"}, {"color": "green", "id": 229, "label": 229, "shape": "dot", "title": "229\n{\u0027is_safe\u0027: 0.17}"}, {"color": "green", "id": 230, "label": 230, "shape": "dot", "title": "230\n{\u0027is_safe\u0027: 0.66}"}, {"color": "green", "id": 232, "label": 232, "shape": "dot", "title": "232\n{\u0027is_safe\u0027: 0.31}"}, {"color": "green", "id": 238, "label": 238, "shape": "dot", "title": "238\n{\u0027is_safe\u0027: 0.24}"}, {"color": "green", "id": 242, "label": 242, "shape": "dot", "title": "242\n{\u0027is_safe\u0027: 0.09}"}, {"color": "green", "id": 245, "label": 245, "shape": "dot", "title": "245\n{\u0027is_safe\u0027: 0.22}"}, {"color": "green", "id": 247, "label": 247, "shape": "dot", "title": "247\n{\u0027is_safe\u0027: 0.22}"}, {"color": "green", "id": 251, "label": 251, "shape": "dot", "title": "251\n{\u0027is_safe\u0027: 0.43}"}, {"color": "green", "id": 252, "label": 252, "shape": "dot", "title": "252\n{\u0027is_safe\u0027: 0.17}"}, {"color": "green", "id": 253, "label": 253, "shape": "dot", "title": "253\n{\u0027is_safe\u0027: 0.37}"}, {"color": "green", "id": 256, "label": 256, "shape": "dot", "title": "256\n{\u0027is_safe\u0027: 0.0}"}, {"color": "green", "id": 266, "label": 266, "shape": "dot", "title": "266\n{\u0027is_safe\u0027: 0.17}"}, {"color": "green", "id": 268, "label": 268, "shape": "dot", "title": "268\n{\u0027is_safe\u0027: 0.06}"}, {"color": "green", "id": 272, "label": 272, "shape": "dot", "title": "272\n{\u0027is_safe\u0027: 0.17}"}, {"color": "green", "id": 274, "label": 274, "shape": "dot", "title": "274\n{\u0027is_safe\u0027: 0.06}"}]);
-                  edges = new vis.DataSet([{"from": "address1", "to": 8}, {"from": "address1", "to": 44}, {"from": "address1", "to": 79}, {"from": "address1", "to": 81}, {"from": "address1", "to": 115}, {"from": "address1", "to": 136}, {"from": "address1", "to": 157}, {"from": "address1", "to": 187}, {"from": "address1", "to": 230}, {"from": "address1", "to": 232}, {"from": "address1", "to": 245}, {"from": "address1", "to": 252}, {"from": "address1", "to": 272}, {"from": "address2", "to": 23}, {"from": "address2", "to": 66}, {"from": "address2", "to": 69}, {"from": "address2", "to": 97}, {"from": "address2", "to": 219}, {"from": "address2", "to": 220}, {"from": "address2", "to": 238}, {"from": "address2", "to": 268}, {"from": "address3", "to": 9}, {"from": "address3", "to": 21}, {"from": "address3", "to": 74}, {"from": "address3", "to": 83}, {"from": "address3", "to": 90}, {"from": "address3", "to": 145}, {"from": "address3", "to": 174}, {"from": "address3", "to": 181}, {"from": "address3", "to": 185}, {"from": "address3", "to": 190}, {"from": "address3", "to": 197}, {"from": "address3", "to": 229}, {"from": "address3", "to": 266}, {"from": "address4", "to": 16}, {"from": "address4", "to": 33}, {"from": "address4", "to": 49}, {"from": "address4", "to": 61}, {"from": "address4", "to": 77}, {"from": "address4", "to": 166}, {"from": "address4", "to": 192}, {"from": "address4", "to": 228}, {"from": "address5", "to": 14}, {"from": "address5", "to": 24}, {"from": "address5", "to": 52}, {"from": "address5", "to": 68}, {"from": "address5", "to": 93}, {"from": "address5", "to": 116}, {"from": "address5", "to": 127}, {"from": "address5", "to": 188}, {"from": "address5", "to": 208}, {"from": "address5", "to": 253}, {"from": "address6", "to": 1}, {"from": "address6", "to": 30}, {"from": "address6", "to": 101}, {"from": "address6", "to": 114}, {"from": "address6", "to": 130}, {"from": "address6", "to": 144}, {"from": "address6", "to": 164}, {"from": "address6", "to": 172}, {"from": "address6", "to": 182}, {"from": "address6", "to": 189}, {"from": "address6", "to": 191}, {"from": "address6", "to": 274}, {"from": "address7", "to": 18}, {"from": "address7", "to": 67}, {"from": "address7", "to": 98}, {"from": "address7", "to": 123}, {"from": "address7", "to": 211}, {"from": "address7", "to": 247}, {"from": "address7", "to": 251}, {"from": "address8", "to": 40}, {"from": "address8", "to": 112}, {"from": "address8", "to": 133}, {"from": "address8", "to": 151}, {"from": "address8", "to": 169}, {"from": "address8", "to": 199}, {"from": "address8", "to": 214}, {"from": "address8", "to": 222}, {"from": "address9", "to": 6}, {"from": "address9", "to": 35}, {"from": "address9", "to": 128}, {"from": "address9", "to": 138}, {"from": "address9", "to": 153}, {"from": "address9", "to": 168}, {"from": "address9", "to": 225}, {"from": "address9", "to": 227}, {"from": "address10", "to": 5}, {"from": "address10", "to": 88}, {"from": "address10", "to": 142}, {"from": "address10", "to": 143}, {"from": "address10", "to": 149}, {"from": "address10", "to": 154}, {"from": "address10", "to": 171}, {"from": "address10", "to": 173}, {"from": "address10", "to": 178}, {"from": "address10", "to": 215}, {"from": "address10", "to": 218}, {"from": "address10", "to": 242}, {"from": "address10", "to": 256}, {"from": 1, "to": "address7"}, {"from": 5, "to": "address7"}, {"from": 6, "to": "address5"}, {"from": 8, "to": "address2"}, {"from": 9, "to": "address7"}, {"from": 14, "to": "address8"}, {"from": 16, "to": "address8"}, {"from": 18, "to": "address2"}, {"from": 21, "to": "address7"}, {"from": 23, "to": "address1"}, {"from": 24, "to": "address2"}, {"from": 30, "to": "address7"}, {"from": 33, "to": "address5"}, {"from": 35, "to": "address2"}, {"from": 40, "to": "address5"}, {"from": 44, "to": "address2"}, {"from": 49, "to": "address8"}, {"from": 52, "to": "address8"}, {"from": 61, "to": "address7"}, {"from": 66, "to": "address5"}, {"from": 67, "to": "address1"}, {"from": 68, "to": "address8"}, {"from": 69, "to": "address7"}, {"from": 74, "to": "address2"}, {"from": 77, "to": "address1"}, {"from": 79, "to": "address2"}, {"from": 81, "to": "address8"}, {"from": 83, "to": "address1"}, {"from": 88, "to": "address7"}, {"from": 90, "to": "address7"}, {"from": 93, "to": "address7"}, {"from": 97, "to": "address8"}, {"from": 98, "to": "address5"}, {"from": 101, "to": "address2"}, {"from": 112, "to": "address2"}, {"from": 114, "to": "address7"}, {"from": 115, "to": "address2"}, {"from": 116, "to": "address1"}, {"from": 123, "to": "address2"}, {"from": 127, "to": "address8"}, {"from": 128, "to": "address1"}, {"from": 130, "to": "address5"}, {"from": 133, "to": "address5"}, {"from": 136, "to": "address8"}, {"from": 138, "to": "address7"}, {"from": 142, "to": "address5"}, {"from": 143, "to": "address7"}, {"from": 144, "to": "address5"}, {"from": 145, "to": "address2"}, {"from": 149, "to": "address2"}, {"from": 151, "to": "address7"}, {"from": 153, "to": "address8"}, {"from": 154, "to": "address5"}, {"from": 157, "to": "address5"}, {"from": 164, "to": "address5"}, {"from": 166, "to": "address2"}, {"from": 168, "to": "address7"}, {"from": 169, "to": "address2"}, {"from": 171, "to": "address1"}, {"from": 172, "to": "address5"}, {"from": 173, "to": "address2"}, {"from": 174, "to": "address7"}, {"from": 178, "to": "address1"}, {"from": 181, "to": "address2"}, {"from": 182, "to": "address8"}, {"from": 185, "to": "address2"}, {"from": 187, "to": "address7"}, {"from": 188, "to": "address8"}, {"from": 189, "to": "address5"}, {"from": 190, "to": "address8"}, {"from": 191, "to": "address8"}, {"from": 192, "to": "address5"}, {"from": 197, "to": "address8"}, {"from": 199, "to": "address1"}, {"from": 208, "to": "address7"}, {"from": 211, "to": "address8"}, {"from": 214, "to": "address5"}, {"from": 215, "to": "address1"}, {"from": 218, "to": "address7"}, {"from": 219, "to": "address5"}, {"from": 220, "to": "address8"}, {"from": 222, "to": "address2"}, {"from": 225, "to": "address8"}, {"from": 227, "to": "address8"}, {"from": 228, "to": "address8"}, {"from": 229, "to": "address7"}, {"from": 230, "to": "address5"}, {"from": 232, "to": "address7"}, {"from": 238, "to": "address7"}, {"from": 242, "to": "address5"}, {"from": 245, "to": "address7"}, {"from": 247, "to": "address5"}, {"from": 251, "to": "address1"}, {"from": 252, "to": "address5"}, {"from": 253, "to": "address2"}, {"from": 256, "to": "address7"}, {"from": 266, "to": "address8"}, {"from": 268, "to": "address8"}, {"from": 272, "to": "address2"}, {"from": 274, "to": "address1"}]);
+                  nodes = new vis.DataSet([{"color": "purple", "id": "address1", "label": "address1", "shape": "dot", "title": "address1\n Calculated trust: 1\n Actually safe: True"}, {"color": "blue", "id": "address2", "label": "address2", "shape": "dot", "title": "address2\n Calculated trust: 1.0\n Actually safe: True"}, {"color": "blue", "id": "address4", "label": "address4", "shape": "dot", "title": "address4\n Calculated trust: 1.0\n Actually safe: True"}, {"color": "blue", "id": "address5", "label": "address5", "shape": "dot", "title": "address5\n Calculated trust: 1.0\n Actually safe: True"}, {"color": "blue", "id": "address7", "label": "address7", "shape": "dot", "title": "address7\n Calculated trust: 0\n Actually safe: False"}, {"color": "blue", "id": "address8", "label": "address8", "shape": "dot", "title": "address8\n Calculated trust: 1.0\n Actually safe: True"}, {"color": "green", "id": 1, "label": 1, "shape": "dot", "title": "1\n{\u0027is_safe\u0027: 0.67}"}, {"color": "green", "id": 4, "label": 4, "shape": "dot", "title": "4\n{\u0027is_safe\u0027: 0.89}"}, {"color": "green", "id": 6, "label": 6, "shape": "dot", "title": "6\n{\u0027is_safe\u0027: 0.63}"}, {"color": "green", "id": 7, "label": 7, "shape": "dot", "title": "7\n{\u0027is_safe\u0027: 0.97}"}, {"color": "green", "id": 9, "label": 9, "shape": "dot", "title": "9\n{\u0027is_safe\u0027: 0.48}"}]);
+                  edges = new vis.DataSet([{"from": "address1", "to": 4}, {"from": "address2", "to": 9}, {"from": "address7", "to": 6}, {"from": "address7", "to": 7}, {"from": "address8", "to": 1}, {"from": 1, "to": "address1"}, {"from": 4, "to": "address4"}, {"from": 6, "to": "address8"}, {"from": 7, "to": "address8"}, {"from": 9, "to": "address5"}]);
 
                   nodeColors = {};
                   allNodes = nodes.get({ returnType: "Object" });
@@ -222,23 +144,6 @@
                   
 
 
-                  
-                      network.on("stabilizationProgress", function(params) {
-                          document.getElementById('loadingBar').removeAttribute("style");
-                          var maxWidth = 496;
-                          var minWidth = 20;
-                          var widthFactor = params.iterations/params.total;
-                          var width = Math.max(minWidth,maxWidth * widthFactor);
-                          document.getElementById('bar').style.width = width + 'px';
-                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
-                      });
-                      network.once("stabilizationIterationsDone", function() {
-                          document.getElementById('text').innerHTML = '100%';
-                          document.getElementById('bar').style.width = '496px';
-                          document.getElementById('loadingBar').style.opacity = 0;
-                          // really clean the dom element
-                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
-                      });
                   
 
                   return network;
