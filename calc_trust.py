@@ -68,7 +68,7 @@ def trust_attestations(trust_identity_attester, claim):
     # Inputs: trust_identity of the attester
     # Outputs: Ta - the trust score of the attestation
     d = 0.9  # Coefficient predefined in paper
-    confidence = 1  # Confidence factor from attester in attestation
+    confidence = 1  # Confidence factor from attester in attestation. Could be customized per user.
     
     threshold = 0.01
     if trust_identity_attester[claim] > threshold:
@@ -90,6 +90,7 @@ def trust_claims(input_attestation,linked_attestations):
     Tc = round(1 - exp(exponent), ndigits=2)
     # print(f'output Tc {Tc} with {len(linked_attestations)} linked attestations')
     return Tc
+
 
 def trust_identities(input_attestation,linked_attestations):
     # Inputs: All of the attestations linked to an identity
@@ -115,7 +116,8 @@ def trust_identities(input_attestation,linked_attestations):
     # print(f'output Ti {Ti} with {len(linked_attestations)} linked claims')
     return Ti
 
-def calculate_trust(attestations, wallet_addresses,predefined_claims = ["is_safe", "is_unsafe", "creditworthiness"], num_rounds=100, convergence_threshold=0.01):
+
+def calculate_trust(attestations, wallet_addresses,predefined_claims = ["is_safe", "is_unsafe", "gitcoinScore"], num_rounds=100, convergence_threshold=0.01):
     initialize_trust_scores(attestations, wallet_addresses,predefined_claims)
     previous_attestations = copy.deepcopy(attestations)  # Deep copy to avoid reference issues
     

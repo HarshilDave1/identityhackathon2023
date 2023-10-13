@@ -24,7 +24,7 @@ def print_trusted_wallet_addresses(wallet_addresses):
             print(address)
 
 # Define Wallet Addresses and their roles
-def generate_wallet_addresses(num_wallets, dishonest_ratio=0.1, trusted_ratio=0.2):
+def generate_wallet_addresses(num_wallets, dishonest_ratio=0.05, trusted_ratio=0.1):
     # num_wallets: Total number of wallet addresses to generate
     # dishonest_ratio: The ratio of dishonest addresses to generate
     # trusted_ratio: The ratio of trusted addresses to generate
@@ -46,17 +46,17 @@ def generate_wallet_addresses(num_wallets, dishonest_ratio=0.1, trusted_ratio=0.
         if role == "dishonest": 
             is_safe = False
         is_unsafe = not is_safe
-        creditworthiness = random.random()
+        gitcoinScore = random.random()
         if role == 'trusted':
             wallet_addresses[f"address{i}"] = {
                 "role": role,
                 "is_safe": True,
                 "is_unsafe": False,
-                "creditworthiness": creditworthiness,
+                "gitcoinScore": gitcoinScore,
                 "calculated_trust": {
                     "is_safe": 1,
                     "is_unsafe": 1,
-                    "creditworthiness": 1,
+                    "gitcoinScore": 1,
                 },  
             }
         else:
@@ -64,11 +64,11 @@ def generate_wallet_addresses(num_wallets, dishonest_ratio=0.1, trusted_ratio=0.
                 "role": role,
                 "is_safe": is_safe,
                 "is_unsafe": is_unsafe,
-                "creditworthiness": creditworthiness,
+                "gitcoinScore": gitcoinScore,
                 "calculated_trust": {
                     "is_safe": 0,
                     "is_unsafe": 0,
-                    "creditworthiness": 0,
+                    "gitcoinScore": 0,
                 },  
             }
         
@@ -105,8 +105,24 @@ def generate_attestations(num_attestations, wallet_addresses, attestations=[]):
         else:
             # Select a random claim type
             claim_type = random.choice(["is_safe"])
-            if claim_type == "creditworthiness":
-                claim_value = random.randint(0, 100)  # Random creditworthiness score
+            if claim_type == "gitcoinScore":
+                if wallet_addresses[attester]["role"] == "honest" or wallet_addresses[attester]["role"] == "trusted"  and recipient is not None:
+                    if wallet_addresses[recipient][claim_type]: #Only allow True attestations.
+                        claim_value = wallet_addresses[recipient][claim_type]
+                        data = {claim_type: claim_value}
+                        attestation = Attestation(
+                            uid, attestation_time, recipient, attester, data, isTrue
+                        )
+                        attestations.append(attestation)
+                    else:
+                        continue
+                elif wallet_addresses[attester]["role"] == "dishonest":
+                    claim_value = random.random() # Random gitcoinScore score
+                    data = {claim_type: claim_value}
+                    attestation = Attestation(
+                        uid, attestation_time, recipient, attester, data, isTrue
+                    )
+                    attestations.append(attestation)
             else:
                 if wallet_addresses[attester]["role"] == "honest" or wallet_addresses[attester]["role"] == "trusted"  and recipient is not None:
                     if wallet_addresses[recipient][claim_type]: #Only allow True attestations.
